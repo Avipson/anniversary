@@ -8,8 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Added Pinyon Script for the names -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Pinyon+Script&family=Montserrat:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@1,600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Pinyon+Script&family=Montserrat:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@1,600&family=Noto+Serif+Devanagari:wght@400;700&display=swap" rel="stylesheet">    
     <style>
         :root {
             --primary: #0f172a; /* Deep Royal Navy */
@@ -82,18 +81,33 @@
         body.loaded .curtain-panel.right { transform: translateX(100%); }
         body.loaded .curtain-logo { opacity: 0; }
 
-        /* --- HERO SECTION --- */
-        .hero {
+        /* --- SHARED LAYOUT STYLES --- */
+        .hero, .card-section, .message-section {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             position: relative;
-            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
             overflow: hidden;
-            padding: 20px; /* Reduced vertical padding */
-            padding-bottom: 80px; /* Added bottom padding to ensure content clears scroll button */
+            padding: 40px 20px;
+        }
+
+        /* --- BACKGROUND GRADIENTS --- */
+        /* Hero & Message: Dark Deep Navy */
+        .hero, .message-section {
+            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
+        }
+
+        /* Card Section: Slightly Lighter Navy Shade */
+        .card-section {
+            background: radial-gradient(circle at center, #334155 0%, #1e293b 100%);
+        }
+
+        /* Hero specific tweaks */
+        .hero {
+            padding: 20px; 
+            padding-bottom: 80px; 
         }
 
         /* Animated Background Mandalas */
@@ -101,7 +115,8 @@
             position: absolute;
             opacity: 0.1;
             pointer-events: none;
-            animation: spin 60s linear infinite; /* Restored CSS animation */
+            animation: spin 60s linear infinite;
+            z-index: 0;
         }
         .m-1 { top: -100px; left: -100px; width: 500px; height: 500px; fill: var(--gold); }
         .m-2 { bottom: -100px; right: -100px; width: 600px; height: 600px; fill: var(--silver); animation-direction: reverse; }
@@ -134,17 +149,16 @@
         }
 
         .hero h1 {
-            font-family: 'Pinyon Script', cursive; /* NEW FONT */
-            font-size: 6.5rem; /* Larger for Pinyon Script */
+            font-family: 'Pinyon Script', cursive;
+            font-size: 6.5rem;
             line-height: 1.1;
             margin-bottom: 10px;
-            /* Luxurious Gold Gradient */
             background: linear-gradient(to bottom right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             padding: 10px 10px;
             font-weight: 400;
-            text-shadow: 0px 10px 20px rgba(0,0,0,0.5); /* Deep shadow for 3D feel */
+            text-shadow: 0px 10px 20px rgba(0,0,0,0.5);
         }
 
         .hero .subtitle {
@@ -152,7 +166,7 @@
             font-size: 1.6rem;
             letter-spacing: 5px;
             color: var(--silver);
-            margin-bottom: 15px; /* Reduced margin to pull countdown up */
+            margin-bottom: 15px;
             text-transform: uppercase;
             opacity: 0.9;
         }
@@ -161,11 +175,11 @@
         .countdown-container {
             display: flex;
             gap: 15px;
-            margin-top: 20px; /* Reduced margin top */
+            margin-top: 20px;
             justify-content: center;
             flex-wrap: wrap;
             width: 100%;
-            align-items: center; /* Vertically align boxes */
+            align-items: center;
         }
 
         .count-box {
@@ -183,12 +197,11 @@
             transition: transform 0.3s ease;
         }
 
-        /* Specific style for the Seconds block to make it smaller */
         .count-box.small-box {
             min-width: 60px;
             padding: 10px 15px;
             border-color: rgba(197, 160, 89, 0.1);
-            transform: scale(0.9); /* Visually smaller */
+            transform: scale(0.9);
         }
         
         .count-box:hover {
@@ -210,8 +223,8 @@
         }
 
         .count-box.small-box .count-val {
-            font-size: 1.2rem; /* Smaller font for seconds */
-            color: var(--gold-light); /* Slightly distinct color */
+            font-size: 1.2rem;
+            color: var(--gold-light);
         }
 
         .count-label {
@@ -240,16 +253,8 @@
         /* --- SECTION: THE CARD (3D TILT) --- */
         .card-section {
             padding: 120px 20px;
-            background-color: var(--cream);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            perspective: 1500px; /* Strong perspective */
-            overflow: visible;
-            min-height: 90vh;
-            background: radial-gradient(circle at center, #fffbf0 0%, #ede5d0 100%);
+            perspective: 1500px;
+            min-height: 100vh; /* Full height */
         }
 
         .invitation-card {
@@ -257,8 +262,9 @@
             width: 100%;
             max-width: 520px;
             position: relative;
+            z-index: 10; /* Above mandalas */
             box-shadow: 
-                0 50px 100px -20px rgba(50, 50, 93, 0.5), 
+                0 50px 100px -20px rgba(0, 0, 0, 0.5), 
                 0 30px 60px -30px rgba(0, 0, 0, 0.6), 
                 0 -2px 6px 0 rgba(255, 255, 255, 0.4) inset;
             transform-style: preserve-3d;
@@ -267,7 +273,6 @@
             border-radius: 12px;
             overflow: hidden;
             line-height: 0;
-            /* Border removed as requested */
         }
 
         .card-shine {
@@ -289,20 +294,12 @@
         /* --- HOST MESSAGE SECTION (3D GLASS) --- */
         .message-section {
             padding: 120px 20px;
-            background: #0f172a;
-            text-align: center;
             perspective: 1000px;
-            position: relative;
-            overflow: hidden;
         }
         
         .message-bg-effect {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 100%; height: 100%;
-            transform: translate(-50%, -50%);
-            background: radial-gradient(circle at 50% 50%, rgba(197, 160, 89, 0.05) 0%, transparent 70%);
-            pointer-events: none;
+            /* Removed specific bg effect to keep consistent with hero */
+            display: none; 
         }
 
         .section-title {
@@ -313,6 +310,8 @@
             opacity: 0; /* JS Reveal */
             transform: translateY(30px);
             transition: all 0.8s ease;
+            z-index: 10;
+            position: relative;
         }
         
         .message-container {
@@ -324,11 +323,13 @@
             padding: 70px 50px;
             border-radius: 20px;
             position: relative;
+            z-index: 10;
             transform-style: preserve-3d;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             transition: transform 0.2s ease-out; /* Smooth follow */
             opacity: 0; /* JS Reveal */
             transform: translateY(50px) rotateX(10deg);
+            text-align: center; /* Ensures content is centered */
         }
 
         .message-container::before {
@@ -375,15 +376,16 @@
         }
         
         .sign-off {
-            font-family: 'Cinzel', serif; 
+            font-family: 'Noto Serif Devanagari', serif; /* UPDATED FONT */
             color: var(--gold); 
             font-weight: 600; 
-            letter-spacing: 3px; 
-            margin-top: 40px;
-            font-size: 1.2rem;
+            letter-spacing: 0px; /* Reduced to avoid breaking Hindi chars */
+            margin-top: 20px; /* Reduced from 40px */
+            font-size: 1.3rem;
             border-top: 1px solid rgba(197, 160, 89, 0.2);
             display: inline-block;
-            padding-top: 20px;
+            padding-top: 15px; /* Reduced from 20px */
+            line-height: 1.5;
         }
 
         /* --- FOOTER --- */
@@ -401,26 +403,23 @@
         }
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes float { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-15px);} }
         @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);} 40% {transform: translateX(-50%) translateY(-10px);} 60% {transform: translateX(-50%) translateY(-5px);} }
 
         /* --- RESPONSIVE DESIGN FOR MOBILE --- */
         @media (max-width: 768px) {
             .hero {
-                padding-bottom: 90px; /* Extra padding on mobile to clear scroll */
+                padding-bottom: 90px;
             }
             .hero h1 { font-size: 3.8rem; line-height: 1.2; }
             .hero .subtitle { font-size: 1rem; letter-spacing: 3px; }
             .hero h2 { font-size: 0.8rem; letter-spacing: 3px; }
             .hero-content { padding-top: 10px; }
             
-            /* Tighter countdown on mobile */
             .countdown-container { gap: 8px; margin-top: 15px; }
             .count-box { min-width: 60px; padding: 10px 5px; }
             .count-val { font-size: 1.2rem; }
             .count-label { font-size: 0.5rem; }
             
-            /* Specific adjustments for seconds box on mobile */
             .count-box.small-box { min-width: 50px; padding: 8px 4px; }
             .count-box.small-box .count-val { font-size: 1rem; }
 
@@ -430,7 +429,7 @@
 
             .message-container { 
                 padding: 40px 25px; 
-                transform: none !important; /* Disable 3D tilt on mobile for performance */
+                transform: none !important; /* Disable 3D tilt on mobile */
             }
             .message-text { font-size: 1.1rem; transform: none; }
             .message-container::before { font-size: 5rem; top: -10px; left: 10px; transform: none; }
@@ -444,7 +443,6 @@
     <div class="curtain-overlay" id="curtain">
         <div class="curtain-panel left"></div>
         <div class="curtain-panel right"></div>
-        <!-- Moved Logo AFTER panels to ensure it sits on top visually -->
         <div class="curtain-logo">
             <div style="font-family: 'Cinzel', serif; font-size: 4rem; color: var(--gold); border: 3px solid var(--gold); padding: 10px 30px; background: #0f172a;">25</div>
         </div>
@@ -452,18 +450,17 @@
 
     <!-- Hero Section -->
     <section class="hero" id="heroSection">
-        <!-- Background SVGs (Animated via JS Parallax) -->
-        <svg class="mandala-bg m-1" id="m1" viewBox="0 0 100 100">
+        <!-- Background SVGs -->
+        <svg class="mandala-bg m-1" viewBox="0 0 100 100">
             <path d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z" />
             <circle cx="50" cy="50" r="10" />
             <path d="M50 20 Q80 20 80 50 Q80 80 50 80 Q20 80 20 50 Q20 20 50 20" fill="none" stroke="currentColor" stroke-width="1"/>
         </svg>
-        <svg class="mandala-bg m-2" id="m2" viewBox="0 0 100 100">
+        <svg class="mandala-bg m-2" viewBox="0 0 100 100">
              <path d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z" />
         </svg>
 
         <div class="hero-content">
-            <!-- Updated Font and Color via CSS -->
             <h2 class="animate-text">A Journey of Love, Laughter & Legacy</h2>
             <h1 class="animate-text">Ajay & Vishakha</h1>
             <div class="subtitle animate-text">Silver Jubilee Celebration</div>
@@ -481,7 +478,6 @@
                     <div class="count-val" id="minutes">00</div>
                     <div class="count-label">Mins</div>
                 </div>
-                <!-- Seconds Block with specific class -->
                 <div class="count-box small-box">
                     <div class="count-val" id="seconds">00</div>
                     <div class="count-label">Secs</div>
@@ -497,6 +493,16 @@
 
     <!-- The Card Section -->
     <section class="card-section">
+        <!-- Re-using Animated Background Mandalas for Consistency -->
+        <svg class="mandala-bg m-1" viewBox="0 0 100 100">
+            <path d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z" />
+            <circle cx="50" cy="50" r="10" />
+            <path d="M50 20 Q80 20 80 50 Q80 80 50 80 Q20 80 20 50 Q20 20 50 20" fill="none" stroke="currentColor" stroke-width="1"/>
+        </svg>
+        <svg class="mandala-bg m-2" viewBox="0 0 100 100">
+             <path d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z" />
+        </svg>
+
         <div class="invitation-card" id="tiltCard">
             <div class="card-shine" id="shine"></div>
             <!-- Using Placehold.co to demonstrate where the image goes, replace source with 'invitatio_card.png' -->
@@ -506,7 +512,16 @@
 
     <!-- Host Message Section -->
     <section class="message-section" id="messageSection">
-        <div class="message-bg-effect"></div>
+        <!-- Re-using Animated Background Mandalas for Consistency -->
+        <svg class="mandala-bg m-1" viewBox="0 0 100 100">
+            <path d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z" />
+            <circle cx="50" cy="50" r="10" />
+            <path d="M50 20 Q80 20 80 50 Q80 80 50 80 Q20 80 20 50 Q20 20 50 20" fill="none" stroke="currentColor" stroke-width="1"/>
+        </svg>
+        <svg class="mandala-bg m-2" viewBox="0 0 100 100">
+             <path d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z" />
+        </svg>
+
         <h2 class="section-title reveal-on-scroll">Message from the Heart</h2>
         
         <div class="message-container reveal-on-scroll" id="tiltMessage">
@@ -516,18 +531,17 @@
                 "Twenty-five years ago, we started this beautiful journey together. It has been a tapestry woven with love, laughter, resilience, and the blessings of our elders. We are truly humbled by the warmth and support you have showered upon us. We eagerly look forward to celebrating this milestone surrounded by the people who mean the most to us."
             </p>
 
-            <div class="message-signatures">
-                <span class="quote-hindi">
+        <div class="message-signatures">
+                <!-- <span class="quote-hindi">
                     "आपके साथ और स्नेह से ही यह सफ़र यादगार बना है।"
                 </span>
                 <span class="quote-sanskrit">
                     || Atithi Devo Bhava ||
-                </span>
+                </span> -->
                 
                 <div class="sign-off">
-                    — Ajay & Vishakha
+                    "आपके साथ और स्नेह से ही यह सफ़र यादगार बना है।"
                 </div>
-            </div>
         </div>
     </section>
 
@@ -555,7 +569,7 @@
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000); // Added Seconds Calculation
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000); 
 
             if (distance < 0) {
                  document.getElementById('days').innerText = "00";
@@ -580,12 +594,12 @@
 
         cardSection.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left; // x position within the element.
-            const y = e.clientY - rect.top;  // y position within the element.
+            const x = e.clientX - rect.left; 
+            const y = e.clientY - rect.top;  
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
 
-            const rotateX = ((y - centerY) / centerY) * -10; // Max tilt deg
+            const rotateX = ((y - centerY) / centerY) * -10; 
             const rotateY = ((x - centerX) / centerX) * 10;
 
             card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
@@ -611,7 +625,6 @@
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
                 
-                // Very subtle tilt for text container
                 const rotateX = ((y - centerY) / centerY) * -5; 
                 const rotateY = ((x - centerX) / centerX) * 5;
 
@@ -622,8 +635,6 @@
                 messageContainer.style.transform = 'rotateX(0) rotateY(0) translateZ(0)';
             });
         }
-
-        // --- 5. PARALLAX REMOVED ---
         
         // --- 6. Scroll Reveal Animation ---
         const observer = new IntersectionObserver((entries) => {
