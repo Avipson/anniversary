@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajay & Vishakha - Silver Jubilee</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Added Pinyon Script for the names -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Pinyon+Script&family=Montserrat:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@1,600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0f172a; /* Deep Royal Navy */
+            --secondary: #1e293b;
+            --gold: #c5a059;
+            --gold-light: #e6c98c;
+            --silver: #e2e8f0;
+            --cream: #fffbf0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--primary);
+            color: var(--silver);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden; /* Global perspective for 3D effects */
+        }
+
+        /* --- UTILS --- */
+        .text-gold { color: var(--gold); }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .text-center { text-align: center; }
+        
+        /* --- LOADING CURTAIN ANIMATION --- */
+        .curtain-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9999;
+            display: flex;
+            pointer-events: none;
+        }
+        
+        .curtain-panel {
+            width: 50%;
+            height: 100%;
+            background: var(--primary);
+            position: relative;
+            transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid var(--gold);
+        }
+
+        .curtain-panel.right {
+            border-right: none;
+            border-left: 1px solid var(--gold);
+        }
+
+        .curtain-logo {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        body.loaded .curtain-panel.left { transform: translateX(-100%); }
+        body.loaded .curtain-panel.right { transform: translateX(100%); }
+        body.loaded .curtain-logo { opacity: 0; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
+            overflow: hidden;
+            padding: 20px; /* Reduced vertical padding */
+            padding-bottom: 80px; /* Added bottom padding to ensure content clears scroll button */
+        }
+
+        /* Animated Background Mandalas */
+        .mandala-bg {
+            position: absolute;
+            opacity: 0.1;
+            pointer-events: none;
+            animation: spin 60s linear infinite; /* Restored CSS animation */
+        }
+        .m-1 { top: -100px; left: -100px; width: 500px; height: 500px; fill: var(--gold); }
+        .m-2 { bottom: -100px; right: -100px; width: 600px; height: 600px; fill: var(--silver); animation-direction: reverse; }
+
+        .hero-content {
+            z-index: 10;
+            text-align: center;
+            opacity: 0; 
+            transform: translateY(30px);
+            transition: all 1s ease 1.5s;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 10px;
+        }
+
+        body.loaded .hero-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero h2 {
+            letter-spacing: 6px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            color: var(--silver);
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .hero h1 {
+            font-family: 'Pinyon Script', cursive; /* NEW FONT */
+            font-size: 6.5rem; /* Larger for Pinyon Script */
+            line-height: 1.1;
+            margin-bottom: 10px;
+            /* Luxurious Gold Gradient */
+            background: linear-gradient(to bottom right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding: 10px 10px;
+            font-weight: 400;
+            text-shadow: 0px 10px 20px rgba(0,0,0,0.5); /* Deep shadow for 3D feel */
+        }
+
+        .hero .subtitle {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            letter-spacing: 5px;
+            color: var(--silver);
+            margin-bottom: 15px; /* Reduced margin to pull countdown up */
+            text-transform: uppercase;
+            opacity: 0.9;
+        }
+        
+        /* --- COUNTDOWN --- */
+        .countdown-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px; /* Reduced margin top */
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+            align-items: center; /* Vertically align boxes */
+        }
+
+        .count-box {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            padding: 15px 20px;
+            border-radius: 12px;
+            min-width: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        /* Specific style for the Seconds block to make it smaller */
+        .count-box.small-box {
+            min-width: 60px;
+            padding: 10px 15px;
+            border-color: rgba(197, 160, 89, 0.1);
+            transform: scale(0.9); /* Visually smaller */
+        }
+        
+        .count-box:hover {
+            transform: translateY(-5px);
+            border-color: rgba(197, 160, 89, 0.6);
+        }
+        
+        .count-box.small-box:hover {
+            transform: translateY(-5px) scale(0.9);
+        }
+
+        .count-val {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--silver);
+            font-family: 'Cinzel', serif;
+            line-height: 1;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .count-box.small-box .count-val {
+            font-size: 1.2rem; /* Smaller font for seconds */
+            color: var(--gold-light); /* Slightly distinct color */
+        }
+
+        .count-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-top: 5px;
+        }
+        
+        .count-box.small-box .count-label {
+            font-size: 0.5rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            opacity: 0.7;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        /* --- SECTION: THE CARD (3D TILT) --- */
+        .card-section {
+            padding: 120px 20px;
+            background-color: var(--cream);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            perspective: 1500px; /* Strong perspective */
+            overflow: visible;
+            min-height: 90vh;
+            background: radial-gradient(circle at center, #fffbf0 0%, #ede5d0 100%);
+        }
+
+        .invitation-card {
+            background: #fff;
+            width: 100%;
+            max-width: 520px;
+            position: relative;
+            box-shadow: 
+                0 50px 100px -20px rgba(50, 50, 93, 0.5), 
+                0 30px 60px -30px rgba(0, 0, 0, 0.6), 
+                0 -2px 6px 0 rgba(255, 255, 255, 0.4) inset;
+            transform-style: preserve-3d;
+            transform: rotateX(0) rotateY(0);
+            transition: transform 0.1s ease-out;
+            border-radius: 12px;
+            overflow: hidden;
+            line-height: 0;
+            /* Border removed as requested */
+        }
+
+        .card-shine {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .card-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* --- HOST MESSAGE SECTION (3D GLASS) --- */
+        .message-section {
+            padding: 120px 20px;
+            background: #0f172a;
+            text-align: center;
+            perspective: 1000px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .message-bg-effect {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 100%; height: 100%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle at 50% 50%, rgba(197, 160, 89, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 60px;
+            opacity: 0; /* JS Reveal */
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .message-container {
+            max-width: 750px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            padding: 70px 50px;
+            border-radius: 20px;
+            position: relative;
+            transform-style: preserve-3d;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: transform 0.2s ease-out; /* Smooth follow */
+            opacity: 0; /* JS Reveal */
+            transform: translateY(50px) rotateX(10deg);
+        }
+
+        .message-container::before {
+            content: '“';
+            font-family: 'Cinzel', serif;
+            font-size: 8rem;
+            color: var(--gold);
+            opacity: 0.15;
+            position: absolute;
+            top: -30px;
+            left: 30px;
+            transform: translateZ(20px); /* 3D pop */
+        }
+        
+        .message-text {
+            transform: translateZ(40px); /* Text floats above box */
+            font-size: 1.25rem;
+            line-height: 2;
+            font-style: italic;
+            color: #cbd5e1;
+            margin-bottom: 30px;
+        }
+
+        .message-signatures {
+            transform: translateZ(30px);
+        }
+
+        .quote-sanskrit {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem; 
+            color: var(--gold); 
+            margin-top: 35px; 
+            font-style: italic; 
+            display: block; 
+            font-weight: 600;
+        }
+
+        .quote-hindi {
+            display: block;
+            margin-top: 15px;
+            color: var(--silver);
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .sign-off {
+            font-family: 'Cinzel', serif; 
+            color: var(--gold); 
+            font-weight: 600; 
+            letter-spacing: 3px; 
+            margin-top: 40px;
+            font-size: 1.2rem;
+            border-top: 1px solid rgba(197, 160, 89, 0.2);
+            display: inline-block;
+            padding-top: 20px;
+        }
+
+        /* --- FOOTER --- */
+        .footer-section {
+            background: #020617;
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(197, 160, 89, 0.1);
+        }
+
+        /* Animations classes triggered by JS */
+        .reveal-visible {
+            opacity: 1 !important;
+            transform: translateY(0) rotateX(0) !important;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes float { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-15px);} }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);} 40% {transform: translateX(-50%) translateY(-10px);} 60% {transform: translateX(-50%) translateY(-5px);} }
+
+        /* --- RESPONSIVE DESIGN FOR MOBILE --- */
+        @media (max-width: 768px) {
+            .hero {
+                padding-bottom: 90px; /* Extra padding on mobile to clear scroll */
+            }
+            .hero h1 { font-size: 3.8rem; line-height: 1.2; }
+            .hero .subtitle { font-size: 1rem; letter-spacing: 3px; }
+            .hero h2 { font-size: 0.8rem; letter-spacing: 3px; }
+            .hero-content { padding-top: 10px; }
+            
+            /* Tighter countdown on mobile */
+            .countdown-container { gap: 8px; margin-top: 15px; }
+            .count-box { min-width: 60px; padding: 10px 5px; }
+            .count-val { font-size: 1.2rem; }
+            .count-label { font-size: 0.5rem; }
+            
+            /* Specific adjustments for seconds box on mobile */
+            .count-box.small-box { min-width: 50px; padding: 8px 4px; }
+            .count-box.small-box .count-val { font-size: 1rem; }
+
+            .card-section, .message-section, .footer-section {
+                padding: 80px 20px;
+            }
+
+            .message-container { 
+                padding: 40px 25px; 
+                transform: none !important; /* Disable 3D tilt on mobile for performance */
+            }
+            .message-text { font-size: 1.1rem; transform: none; }
+            .message-container::before { font-size: 5rem; top: -10px; left: 10px; transform: none; }
+            .message-signatures { transform: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Curtain Raiser / Loading Screen -->
+    <div class="curtain-overlay" id="curtain">
+        <div class="curtain-panel left"></div>
+        <div class="curtain-panel right"></div>
+        <!-- Moved Logo AFTER panels to ensure it sits on top visually -->
+        <div class="curtain-logo">
+            <div style="font-family: 'Cinzel', serif; font-size: 4rem; color: var(--gold); border: 3px solid var(--gold); padding: 10px 30px; background: #0f172a;">25</div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="heroSection">
+        <!-- Background SVGs (Animated via JS Parallax) -->
+        <svg class="mandala-bg m-1" id="m1" viewBox="0 0 100 100">
+            <path d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z" />
+            <circle cx="50" cy="50" r="10" />
+            <path d="M50 20 Q80 20 80 50 Q80 80 50 80 Q20 80 20 50 Q20 20 50 20" fill="none" stroke="currentColor" stroke-width="1"/>
+        </svg>
+        <svg class="mandala-bg m-2" id="m2" viewBox="0 0 100 100">
+             <path d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z" />
+        </svg>
+
+        <div class="hero-content">
+            <!-- Updated Font and Color via CSS -->
+            <h2 class="animate-text">A Journey of Love, Laughter & Legacy</h2>
+            <h1 class="animate-text">Ajay & Vishakha</h1>
+            <div class="subtitle animate-text">Silver Jubilee Celebration</div>
+            
+            <div class="countdown-container">
+                <div class="count-box">
+                    <div class="count-val" id="days">00</div>
+                    <div class="count-label">Days</div>
+                </div>
+                <div class="count-box">
+                    <div class="count-val" id="hours">00</div>
+                    <div class="count-label">Hours</div>
+                </div>
+                <div class="count-box">
+                    <div class="count-val" id="minutes">00</div>
+                    <div class="count-label">Mins</div>
+                </div>
+                <!-- Seconds Block with specific class -->
+                <div class="count-box small-box">
+                    <div class="count-val" id="seconds">00</div>
+                    <div class="count-label">Secs</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator text-gold" onclick="document.querySelector('.card-section').scrollIntoView()">
+            <p style="font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 5px; font-family: 'Cinzel', serif;">SCROLL</p>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--gold)"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+        </div>
+    </section>
+
+    <!-- The Card Section -->
+    <section class="card-section">
+        <div class="invitation-card" id="tiltCard">
+            <div class="card-shine" id="shine"></div>
+            <!-- Using Placehold.co to demonstrate where the image goes, replace source with 'invitatio_card.png' -->
+            <img id="displayImage" class="card-image" src="invitatio_card.png" onerror="this.onerror=null; this.src='https://placehold.co/520x750/fffbf0/c5a059?text=25th+Anniversary+Card';" alt="Anniversary Invitation">
+        </div>
+    </section>
+
+    <!-- Host Message Section -->
+    <section class="message-section" id="messageSection">
+        <div class="message-bg-effect"></div>
+        <h2 class="section-title reveal-on-scroll">Message from the Heart</h2>
+        
+        <div class="message-container reveal-on-scroll" id="tiltMessage">
+            <p style="font-family: 'Pinyon Script', cursive; font-size: 3rem; color: var(--gold); margin-bottom: 25px;">Gratitude</p>
+            
+            <p class="message-text">
+                "Twenty-five years ago, we started this beautiful journey together. It has been a tapestry woven with love, laughter, resilience, and the blessings of our elders. We are truly humbled by the warmth and support you have showered upon us. We eagerly look forward to celebrating this milestone surrounded by the people who mean the most to us."
+            </p>
+
+            <div class="message-signatures">
+                <span class="quote-hindi">
+                    "आपके साथ और स्नेह से ही यह सफ़र यादगार बना है।"
+                </span>
+                <span class="quote-sanskrit">
+                    || Atithi Devo Bhava ||
+                </span>
+                
+                <div class="sign-off">
+                    — Ajay & Vishakha
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <p style="font-size: 0.8rem; color: #555;">Best Compliments: The Poddar Family</p>
+    </footer>
+
+    <script>
+        // --- 1. Curtain Animation on Load ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+                document.getElementById('curtain').style.pointerEvents = 'none';
+            }, 500);
+        });
+
+        // --- 2. Countdown Timer (Jan 18, 2026, 8:00 PM) ---
+        const eventDate = new Date('January 18, 2026 20:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000); // Added Seconds Calculation
+
+            if (distance < 0) {
+                 document.getElementById('days').innerText = "00";
+                 document.getElementById('hours').innerText = "00";
+                 document.getElementById('minutes').innerText = "00";
+                 document.getElementById('seconds').innerText = "00";
+                 return;
+            }
+
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // --- 3. 3D Tilt for Card (Refined) ---
+        const card = document.getElementById('tiltCard');
+        const shine = document.getElementById('shine');
+        const cardSection = document.querySelector('.card-section');
+
+        cardSection.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left; // x position within the element.
+            const y = e.clientY - rect.top;  // y position within the element.
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = ((y - centerY) / centerY) * -10; // Max tilt deg
+            const rotateY = ((x - centerX) / centerX) * 10;
+
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            
+            shine.style.opacity = '0.6';
+            shine.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.4) 0%, transparent 80%)`;
+        });
+
+        cardSection.addEventListener('mouseleave', () => {
+            card.style.transform = 'rotateX(0) rotateY(0) scale(1)';
+            shine.style.opacity = '0';
+        });
+
+        // --- 4. 3D Float/Tilt for Message Box (Subtle) ---
+        const messageContainer = document.getElementById('tiltMessage');
+        const messageSection = document.getElementById('messageSection');
+
+        if(window.innerWidth > 768) {
+            messageSection.addEventListener('mousemove', (e) => {
+                const rect = messageContainer.getBoundingClientRect();
+                const x = e.clientX - rect.left; 
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Very subtle tilt for text container
+                const rotateX = ((y - centerY) / centerY) * -5; 
+                const rotateY = ((x - centerX) / centerX) * 5;
+
+                messageContainer.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+            });
+
+            messageSection.addEventListener('mouseleave', () => {
+                messageContainer.style.transform = 'rotateX(0) rotateY(0) translateZ(0)';
+            });
+        }
+
+        // --- 5. PARALLAX REMOVED ---
+        
+        // --- 6. Scroll Reveal Animation ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal-visible');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+
+        // --- 7. Mobile Gyroscope Support ---
+        if (window.DeviceOrientationEvent && window.innerWidth < 768) {
+            window.addEventListener("deviceorientation", function(event) {
+               const tiltX = (event.beta || 0) * 0.3; 
+               const tiltY = (event.gamma || 0) * 0.3;
+               const clampedX = Math.max(-10, Math.min(10, tiltX));
+               const clampedY = Math.max(-10, Math.min(10, tiltY));
+               
+               card.style.transform = `rotateX(${clampedX}deg) rotateY(${clampedY}deg)`;
+            }, true);
+        }
+    </script>
+</body>
+</html>
