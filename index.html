@@ -33,7 +33,7 @@
             background-color: var(--primary);
             color: var(--silver);
             font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden; /* Global perspective for 3D effects */
+            overflow-x: hidden;
         }
 
         /* --- UTILS --- */
@@ -410,7 +410,18 @@
             .hero {
                 padding-bottom: 90px;
             }
-            .hero h1 { font-size: 3.8rem; line-height: 1.2; }
+            .hero h1 { 
+                font-size: 3.8rem; line-height: 1.2; 
+                padding: 0 5px;
+            }
+            
+            /* NEW: Stack name parts on mobile */
+            .hero h1 span {
+                display: block;
+                line-height: 1.1;
+                margin-bottom: 5px;
+            }
+
             .hero .subtitle { font-size: 1rem; letter-spacing: 3px; }
             .hero h2 { font-size: 0.8rem; letter-spacing: 3px; }
             .hero-content { padding-top: 10px; }
@@ -425,6 +436,11 @@
 
             .card-section, .message-section, .footer-section {
                 padding: 80px 20px;
+            }
+
+            /* Hide Message Title on Mobile */
+            .message-section .section-title {
+                display: none;
             }
 
             .message-container { 
@@ -461,8 +477,14 @@
         </svg>
 
         <div class="hero-content">
+            <!-- Updated Font and Color via CSS -->
             <h2 class="animate-text">A Journey of Love, Laughter & Legacy</h2>
-            <h1 class="animate-text">Ajay & Vishakha</h1>
+            <!-- Split names into spans for mobile stacking -->
+            <h1 class="animate-text">
+                <span>Ajay</span> 
+                <span>&</span> 
+                <span>Vishakha</span>
+            </h1>
             <div class="subtitle animate-text">Silver Jubilee Celebration</div>
             
             <div class="countdown-container">
